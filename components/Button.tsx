@@ -2,6 +2,7 @@ import { colors, radius } from "@/constants/theme";
 import { CustomButtonProps } from "@/types";
 import { verticalScale } from "@/utils/styling";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import Loading from "./Loading";
 
 const Button = ({
     style,
@@ -13,6 +14,7 @@ const Button = ({
     if (loading) {
         return (
             <View style={[styles.button, style, { backgroundColor: "transparent" }]}>
+                <Loading />
             </View>
         );
     }
