@@ -1,3 +1,4 @@
+import BackButton from "@/components/BackButton";
 import ScreenWrapper from "@/components/ScreenWrapper";
 import { colors, spacingX, spacingY } from "@/constants/theme";
 import { verticalScale } from "@/utils/styling";
@@ -7,8 +8,8 @@ import { StyleSheet, Text, View } from "react-native";
 const Login = () => {
     return (
         <ScreenWrapper>
-            <View style={styles.container}>i
-
+            <View style={styles.container}>
+                <BackButton />
             </View>
         </ScreenWrapper>
     );

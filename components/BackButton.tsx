@@ -1,11 +1,31 @@
-import { Text, View } from "react-native";
+import { colors, radius } from "@/constants/theme";
+import { BackButtonProps } from "@/types";
+import { verticalScale } from "@/utils/styling";
+import { useRouter } from "expo-router";
+import { CaretLeft } from "phosphor-react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-const BackButton = () => {
+const BackButton = ({ style, iconSize = 26 }: BackButtonProps) => {
+    const router = useRouter();
     return (
-        <View>
-            <Text>this is the text </Text>
-        </View>
+        <TouchableOpacity onPress={() => router.back()} style={[styles.button, style]}>
+            <CaretLeft
+                size={verticalScale(iconSize)}
+                color={colors.white}
+                weight="bold"
+            />
+        </TouchableOpacity>
     );
 }
 
 export default BackButton;
+
+const styles = StyleSheet.create({
+    button: {
+        backgroundColor: colors.neutral600,
+        alignSelf: "flex-start",
+        borderRadius: radius._12,
+        borderCurve: "continuous",
+        padding: 5,
+    }
+});
