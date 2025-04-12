@@ -1,7 +1,9 @@
+import ScreenWrapper from "@/components/ScreenWrapper"
+import Typo from "@/components/Typo";
 import { StyleSheet, Text, View } from "react-native"
 
 const Home = () => {
-    return <View><Text>Home</Text></View>
+    return <ScreenWrapper><View><Typo>Home</Typo></View></ScreenWrapper>
 }
 
 export default Home;
