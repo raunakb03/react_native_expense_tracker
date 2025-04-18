@@ -4,15 +4,19 @@ import Typo from "@/components/Typo";
 import { colors, radius, spacingX, spacingY } from "@/constants/theme";
 import { useAuth } from "@/contexts/authContext";
 import { verticalScale } from "@/utils/styling";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native"
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import { Image } from "expo-image";
 import { getProfileImage } from "@/services/imageService";
 import { accountOptionType } from "@/types";
 import * as Icons from "phosphor-react-native";
 import Animated, { FadeInDown } from "react-native-reanimated";
+import { signOut } from "firebase/auth";
+import { auth } from "@/config/firebase";
+import { useRouter } from "expo-router";
 
 const Profile = () => {
     const { user } = useAuth();
+    const router = useRouter();
 
     const accountOptions: accountOptionType[] = [
         {
@@ -62,6 +66,38 @@ const Profile = () => {
         },
     ];
 
+    const handleLogout = async () => {
+        await signOut(auth)
+    }
+
+    const showLogoutAlert = () => {
+        Alert.alert(
+            "Logout",
+            "Are you sure you want to logout?",
+            [
+                {
+                    text: "Cancel",
+                    onPress: () => console.log("Cancel Pressed"),
+                    style: "cancel",
+                },
+                {
+                    text: "Logout",
+                    onPress: () => handleLogout(),
+                    style: "destructive",
+                },
+            ],
+        );
+    }
+
+    const handlePress = (item: accountOptionType) => {
+        if(item.title == "Logout"){
+            showLogoutAlert();
+        }
+
+        if(item.routeName)
+            router.push(item.routeName);
+    }
+
     return <ScreenWrapper>
         <View style={styles.container}>
             <Header title="Profile" style={{marginVertical: spacingY._10}} />
@@ -86,12 +122,14 @@ const Profile = () => {
             <View style={styles.accountOptions}>
                 {accountOptions.map((item, index) => {
                     return (
-                        <Animated.View 
+                        <Animated.View
                             entering={FadeInDown.delay(index*50).springify().damping(14)}
                             style={styles.listItem}
                             key={index.toString()}
                         >
-                            <TouchableOpacity style={styles.flexRow}>
+                            <TouchableOpacity style={styles.flexRow}
+                                onPress={() => {handlePress(item)}}
+                            >
                                 <View style={[styles.listIcon, {backgroundColor: item.bgColor}]}>{item.icon && item.icon}</View>
                                 <Typo size={16} style={{flex: 1}} fontWeight={"500"}>{item.title}</Typo>
                                 <Icons.CaretRight size={verticalScale(20)} weight="bold" color={colors.white}/>
